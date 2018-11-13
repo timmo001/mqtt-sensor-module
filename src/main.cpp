@@ -4,21 +4,29 @@ using namespace std;
 
 DHT dht(DHT_PIN, DHT_TYPE);
 
-Ticker updateStateTimer;
-
 void updateState()
 {
   float temperature = dht.readTemperature();
+  Serial.print("Temperature: ");
+  Serial.println(temperature);
   float humidity = dht.readHumidity();
+  Serial.print("Humidity: ");
+  Serial.println(humidity);
   float heatIndex = dht.computeHeatIndex(temperature, humidity);
+  Serial.print("Feels like: ");
+  Serial.println(heatIndex);
+  float ldr = analogRead(LDR_PIN);
+  Serial.print("LDR: ");
+  Serial.println(ldr);
 
-  const size_t bufferSize = JSON_OBJECT_SIZE(3);
+  const size_t bufferSize = JSON_OBJECT_SIZE(4);
   DynamicJsonBuffer jsonBuffer(bufferSize);
 
   JsonObject &root = jsonBuffer.createObject();
   root["temperature"] = temperature;
   root["humidity"] = humidity;
   root["heatIndex"] = heatIndex;
+  root["ldr"] = ldr;
 
   char payload[root.measureLength() + 1];
   root.printTo(payload, sizeof(payload));
@@ -29,11 +37,12 @@ void updateState()
 void setup()
 {
   Serial.begin(115200);
-  Serial.println();
-  Serial.println();
 
-  // Allows terminal to start up
-  delay(1000);
+  Serial.println();
+  Serial.println();
+  Serial.println("--------------------------");
+  Serial.println("ESP8266 DHT LDR Module");
+  Serial.println("--------------------------");
 
   setupNetworking(WIFI_SSID, WIFI_PASSWORD, HOSTNAME);
   setupMqtt(MQTT_HOST, MQTT_PORT, MQTT_USERNAME, MQTT_PASSWORD,
@@ -42,9 +51,11 @@ void setup()
 
   // Declare inputs
   pinMode(DHT_PIN, INPUT);
-
-  updateState();
-  updateStateTimer.attach(10, updateState);
+  pinMode(LDR_PIN, INPUT);
 }
 
-void loop() {}
+void loop()
+{
+  updateState();
+  delay(10000);
+}

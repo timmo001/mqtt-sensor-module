@@ -17,3 +17,5 @@ const char *MQTT_LWT_TOPIC = "sensor/1/LWT";
 
 const uint8_t DHT_PIN = D5;
 const uint8_t DHT_TYPE = DHT22;
+
+const uint8_t LDR_PIN = A0;
