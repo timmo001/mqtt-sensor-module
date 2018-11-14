@@ -17,7 +17,7 @@ void onMqttConnect(bool sessionPresent)
 {
   Serial.println("MQTT: Connected.");
 
-  mqttClient.publish(lwtTopic, 1, false, "online");
+  mqttClient.publish(lwtTopic, 0, true, "online");
   Serial.println("MQTT: Published LWT.");
 }
 
@@ -80,7 +80,7 @@ void setupMqtt(const char *MQTT_HOST, const uint16_t MQTT_PORT,
   mqttClient.setServer(MQTT_HOST, MQTT_PORT);
   mqttClient.setClientId(CLIENT_ID);
   mqttClient.setCredentials(MQTT_USERNAME, MQTT_PASSWORD);
-  mqttClient.setWill(lwtTopic, 1, false, "offline");
+  mqttClient.setWill(lwtTopic, 0, true, "offline");
 }
 
 void publishState(uint8_t qos, bool retain, const char *payload)
