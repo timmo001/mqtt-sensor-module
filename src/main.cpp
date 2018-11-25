@@ -24,7 +24,7 @@ void updateState()
   float ldr = analogRead(LDR_PIN);
   Serial.print("LDR: ");
   Serial.println(ldr);
-  if (!ldr || ldr != heatIndex)
+  if (!ldr || ldr != ldr)
     return;
 
   const size_t bufferSize = JSON_OBJECT_SIZE(4);
