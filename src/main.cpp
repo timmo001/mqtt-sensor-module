@@ -34,7 +34,7 @@ void updateState()
   root["temperature"] = temperature;
   root["humidity"] = humidity;
   root["heatIndex"] = heatIndex;
-  // root["ldr"] = ldr;
+  root["ldr"] = ldr;
 
   char payload[root.measureLength() + 1];
   root.printTo(payload, sizeof(payload));
