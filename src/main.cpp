@@ -9,15 +9,23 @@ void updateState()
   float temperature = dht.readTemperature();
   Serial.print("Temperature: ");
   Serial.println(temperature);
+  if (!temperature || temperature != temperature)
+    return;
   float humidity = dht.readHumidity();
   Serial.print("Humidity: ");
   Serial.println(humidity);
+  if (!humidity || humidity != humidity)
+    return;
   float heatIndex = dht.computeHeatIndex(temperature, humidity);
   Serial.print("Feels like: ");
   Serial.println(heatIndex);
+  if (!heatIndex || heatIndex != heatIndex)
+    return;
   float ldr = analogRead(LDR_PIN);
   Serial.print("LDR: ");
   Serial.println(ldr);
+  if (!ldr || ldr != heatIndex)
+    return;
 
   const size_t bufferSize = JSON_OBJECT_SIZE(4);
   DynamicJsonBuffer jsonBuffer(bufferSize);
@@ -26,7 +34,7 @@ void updateState()
   root["temperature"] = temperature;
   root["humidity"] = humidity;
   root["heatIndex"] = heatIndex;
-  root["ldr"] = ldr;
+  // root["ldr"] = ldr;
 
   char payload[root.measureLength() + 1];
   root.printTo(payload, sizeof(payload));
